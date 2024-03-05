@@ -8,23 +8,22 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "HR_Profile")
-public class HRProfileEntity {
+@Table(name = "Upload_Profile")
+public class ProfileUploadEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Integer hrId;
-    @Column(name = "First_Name")
-    private String firstName;
-    @Column(name = "Last_Name")
-    private String lastName;
-    @Column(name = "Email")
-    private String email;
-    @Column(name = "Phone")
-    private Long phone;
-    @Column(name = "City")
-    private String city;
+    @Column(name = "Req_ID")
+    private Integer reqId;
+    @Column(name = "JD_ID")
+    private Integer jdId;
+    @Column(name = "File_Name")
+    private String fileName;
+    @Column(name = "File_Type")
+    private String fileType;
+    @Column(name = "File_Path")
+    private String filePath;
+//    private byte[] file;
     @Column(name = "Created_Date")
     private Date createdDate;
     @Column(name = "Created_By")
