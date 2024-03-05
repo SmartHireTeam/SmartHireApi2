@@ -1,4 +1,4 @@
-package com.wf.ProfileBestMatch.model;
+package com.wf.ProfileBestMatch.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class HRProfileModel {
+public class HRProfileResponse {
 
     private Integer id;
     private String empId;
