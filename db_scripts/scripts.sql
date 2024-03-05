@@ -1,0 +1,61 @@
+Create database WF_Hackathon_2024;
+GO
+
+Use WF_Hackathon_2024;
+GO
+
+
+CREATE TABLE `wf_hackathon_2024`.`hr_profile` (
+  `ID` INT NOT NULL AUTO_INCREMENT,
+  `First_Name` VARCHAR(500) NULL,
+  `Last_Name` VARCHAR(500) NULL,
+  `Email` VARCHAR(500) NULL,
+  `Phone` VARCHAR(10) NULL,
+  `City` VARCHAR(255) NULL,
+  `Created_Date` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  `Created_By` VARCHAR(255) NULL,
+  `Modified_Date` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  `Modified_By` VARCHAR(255) NULL,
+  PRIMARY KEY (`ID`));
+
+ALTER TABLE HR_Profile AUTO_INCREMENT=1001;
+
+
+CREATE TABLE wf_hackathon_2024.JOB_DESCRIPTION(
+	JD_ID INT NOT NULL AUTO_INCREMENT,
+	JD_Name varchar(500) NOT NULL,
+	JD_Description varchar(1000) NULL,
+	JD_Field1 varchar(500) NULL,
+	JD_Field2 varchar(500) NULL,
+	JD_Field3 varchar(500) NULL,
+	JD_Field4 varchar(500) NULL,
+	JD_Field5 varchar(500) NULL,
+	JD_Keywords varchar(1000) NULL,
+	Created_Date DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+	Created_By varchar(255) NULL,
+	Modified_Date DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+	Modified_By varchar(255) NULL,
+	PRIMARY KEY (JD_ID)
+ );
+
+
+ALTER TABLE JOB_DESCRIPTION AUTO_INCREMENT=101;
+
+
+
+CREATE TABLE wf_hackathon_2024.Upload_Profile(
+	Req_ID INT NOT NULL AUTO_INCREMENT,
+	JD_ID int NOT NULL,
+	File_Name VARCHAR(500) NULL,
+	File_Type VARCHAR(255) NULL,
+	File_Path VARCHAR(2000) NULL,
+	Created_Date DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+	Created_By varchar(255) NULL,
+	Modified_Date DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+	Modified_By varchar(255) NULL,
+	PRIMARY KEY (Req_ID)
+);
+
+ALTER TABLE Upload_Profile AUTO_INCREMENT=101;
+
+
