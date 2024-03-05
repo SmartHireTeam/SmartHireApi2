@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/wf/profileMatch/")
 public class HRProfileController {
@@ -22,6 +24,18 @@ public class HRProfileController {
 
     @PostMapping(value = "/hrProfiles")
     public ResponseEntity<Object> saveHrProfile(@Validated @RequestBody HrProfileRequest request) {
-        return new ResponseEntity<>(hrProfileService.saveOrUpdateHrProfile(request), HttpStatus.OK);
+        return new ResponseEntity<>(hrProfileService.saveHrProfile(request), HttpStatus.OK);
     }
+
+    @PutMapping(value = "/hrProfiles")
+    public ResponseEntity<Object> updateProfile(@Validated @RequestBody HrProfileRequest request) {
+        return new ResponseEntity<>(hrProfileService.updateHrProfile(request), HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/hrProfiles/{hrId}")
+    public ResponseEntity<Object> deleteProfile(@PathVariable(required = true) Integer hrId) {
+        hrProfileService.deleteHrProfile(hrId);
+        return new ResponseEntity<>("HR Profile with ID{} " + hrId + " Deleted Successfully", HttpStatus.OK);
+    }
+
 }
