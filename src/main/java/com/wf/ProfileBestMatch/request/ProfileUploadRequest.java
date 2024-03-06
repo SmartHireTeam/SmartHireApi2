@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Data
@@ -18,6 +18,7 @@ public class ProfileUploadRequest {
     private String fileName;
     private String fileType;
     private String filePath;
+    private MultipartFile file;
     private String createdBy;
     private String modifiedBy;
 

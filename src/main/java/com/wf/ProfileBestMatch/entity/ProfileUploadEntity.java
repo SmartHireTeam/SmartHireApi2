@@ -23,7 +23,8 @@ public class ProfileUploadEntity {
     private String fileType;
     @Column(name = "File_Path")
     private String filePath;
-//    private byte[] file;
+    //@Column(name)
+    //private byte[] file;
     @Column(name = "Created_Date")
     private Date createdDate;
     @Column(name = "Created_By")

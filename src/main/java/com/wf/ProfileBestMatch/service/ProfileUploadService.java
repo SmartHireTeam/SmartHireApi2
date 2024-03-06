@@ -9,8 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ProfileUploadService {
@@ -20,14 +22,27 @@ public class ProfileUploadService {
     @Autowired
     private ProfileUploadRepository profileUploadRepository;
 
-    public Object getAllJD(Integer jdId) {
+    public Object getAllUploadedProfiles(Integer jdId) {
         LOG.info("JD - Get API Call");
         if(jdId != null && jdId > 0) {
-            ProfileUploadEntity jdEntity = profileUploadRepository.findByReqId(jdId);
-            if(jdEntity == null) {
-                throw new ResourceNotFoundException("JD Profile does not exists with this Id: " + jdId);
+            List<ProfileUploadEntity> uploadedProfiles = profileUploadRepository.findByJdId(jdId);
+            if(uploadedProfiles == null || uploadedProfiles.size() == 0) {
+                throw new ResourceNotFoundException("Profiles does not exists under this JD Id: " + jdId);
             }
-            return jdEntity;
+            return uploadedProfiles;
+        } else {
+            return profileUploadRepository.findAll();
+        }
+    }
+
+    public Object getSingleUploadedProfile(Integer reqId) {
+        LOG.info("JD - Get API Call");
+        if(reqId != null && reqId > 0) {
+            ProfileUploadEntity uploadedProfiles = profileUploadRepository.findByReqId(reqId);
+            if(uploadedProfiles == null) {
+                throw new ResourceNotFoundException("Profile does not exists under this Req Id: " + reqId);
+            }
+            return uploadedProfiles;
         } else {
             return profileUploadRepository.findAll();
         }
@@ -36,48 +51,25 @@ public class ProfileUploadService {
     @Transactional
     public ProfileUploadEntity uploadProfileFile(ProfileUploadRequest request) {
         LOG.info("JD - Save API Call");
+        ProfileUploadEntity uploadEntity = new ProfileUploadEntity();
+        uploadEntity.setJdId(request.getJdId());
 
-        //HRProfileEntity hrEntity = hrProfileRepository.findByEmail(request.getEmailId());
+        uploadEntity.setCreatedBy(request.getCreatedBy());
+        uploadEntity.setCreatedDate(new Date());
+        uploadEntity.setModifiedBy(request.getModifiedBy());
+        uploadEntity.setModifiedDate(new Date());
 
-//        if(hrEntity != null) {
-//            throw new ResourceExsitsExeption("HR Profile already exists with this Email ID: " + request.getEmailId());
-//        }
+        uploadEntity.setFileType(request.getFileType());
+        uploadEntity.setFileName(request.getFileName());
+        uploadEntity.setFilePath(request.getFilePath());
 
-        ProfileUploadEntity jdEntity = new ProfileUploadEntity();
-        jdEntity.setCreatedBy(request.getCreatedBy());
-        jdEntity.setCreatedDate(new Date());
-        jdEntity.setModifiedBy(request.getModifiedBy());
-        jdEntity.setModifiedDate(new Date());
+//        uploadEntity.setFileType(request.getFile().getContentType());
+//        uploadEntity.setFileName(request.getFile().getOriginalFilename());
+//        uploadEntity.setFilePath(request.getFile().getName());
 
-        profileUploadRepository.save(jdEntity);
-        return jdEntity;
+        profileUploadRepository.save(uploadEntity);
+        return uploadEntity;
     }
 
-    @Transactional
-    public ProfileUploadEntity updateJD(ProfileUploadRequest request) {
-        LOG.info("JD - Update API Call");
-
-        ProfileUploadEntity jdEntity = profileUploadRepository.findByReqId(request.getJdId());
-
-        if(jdEntity == null) {
-            throw new ResourceNotFoundException("JD does not exists with id : " + request.getJdId());
-        }
-
-        jdEntity.setModifiedBy(request.getModifiedBy());
-        jdEntity.setModifiedDate(new Date());
-
-        profileUploadRepository.save(jdEntity);
-        return jdEntity;
-
-    }
-
-    @Transactional
-    public void deleteJD(Integer jdId) {
-        ProfileUploadEntity jdEntity = profileUploadRepository.findByReqId(jdId);
-        if(jdEntity == null) {
-            throw new ResourceNotFoundException("JD does not exists with id : " + jdId);
-        }
-        profileUploadRepository.deleteByReqId(jdId);
-    }
 
 }
