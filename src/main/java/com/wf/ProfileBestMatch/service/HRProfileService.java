@@ -54,6 +54,7 @@ public class HRProfileService {
         hrEntity.setCity(request.getCity());
         hrEntity.setModifiedBy(request.getModifiedBy());
         hrEntity.setModifiedDate(new Date());
+        hrEntity.setPassword(request.getPassword());
 
         hrProfileRepository.save(hrEntity);
         return hrEntity;
@@ -76,6 +77,7 @@ public class HRProfileService {
         hrEntity.setCity(request.getCity());
         hrEntity.setModifiedBy(request.getModifiedBy());
         hrEntity.setModifiedDate(new Date());
+        hrEntity.setPassword(request.getPassword());
 
         hrProfileRepository.save(hrEntity);
         return hrEntity;

@@ -18,6 +18,7 @@ public class HRProfileController {
     private HRProfileService hrProfileService;
 
     @GetMapping(value = {"/hrProfiles", "/hrProfiles/{hrId}"})
+    @ResponseBody
     public ResponseEntity<Object> getAllHRProfiles(@PathVariable(required = false) Integer hrId) {
         return new ResponseEntity<>(hrProfileService.getAllHrProfiles(hrId), HttpStatus.OK);
     }

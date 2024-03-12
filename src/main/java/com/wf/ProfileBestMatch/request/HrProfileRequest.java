@@ -18,6 +18,7 @@ public class HrProfileRequest {
     private String lastName;
     private String emailId;
     private Long phone;
+    private String password;
     private String city;
     private String createdBy;
     private String modifiedBy;
