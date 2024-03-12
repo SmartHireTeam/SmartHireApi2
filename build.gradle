@@ -46,8 +46,13 @@ dependencies {
 //	implementation 'org.springframework.boot:spring-boot-starter-security'
 //	implementation 'org.springframework.security:spring-security-web'
 
+	implementation group: 'com.azure.spring', name: 'spring-cloud-azure-starter', version: '4.4.0'
+
 	//MySQL
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.33'
+
+	//Azure SQL
+	implementation group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '6.1.0.jre7'
 
 	implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
 
