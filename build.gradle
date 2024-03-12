@@ -2,10 +2,10 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.15'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id "com.microsoft.azure.azurewebapp" version "1.7.1"
 }
 
-
-group = 'com.wf'
+group = 'com.wf.profilebestmatch'
 version = '0.0.1-SNAPSHOT'
 
 java {
