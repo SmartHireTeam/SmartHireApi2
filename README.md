@@ -1,1 +1,1 @@
-# SmartHireApi2
+# SmartHireApi2 - Java
