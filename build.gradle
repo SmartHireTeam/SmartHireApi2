@@ -93,12 +93,12 @@ tasks.named('test') {
 azurewebapp {
 	subscription = 'b94a1270-7800-4ffd-976d-e9036277350f'
 	resourceGroup = 'defaultresourcegroup-cus'
-	appName = 'SmartHireServiceJavaApi'
-	pricingTier = 'Standard' //P1v2
+	appName = 'smarthireservicejavaapi'
+	pricingTier = 'P1v2'
 	region = 'eastus'
 	runtime {
-		os = 'windows'
-		//webContainer = 'Tomcat 9.0'
+		os = 'Linux'
+		webContainer = 'Java SE'
 		javaVersion = 'Java 17'
 	}
 }
