@@ -13,15 +13,16 @@ import java.util.Date;
 @Builder
 public class JDResponse {
 
-    private Integer id;
-    private String empId;
-    private String firstName;
-    private String lastName;
-    private String emailId;
-    private String phone;
-    private String createdBy;
-    private String modifiedBy;
+    private Integer jdId;
+    private String jdCode;
+    private String jdName;
+    private String jdDescription;
+    private byte[] jdFile;
+    private String fileName;
+    private String fileType;
     private Date createdDate;
+    private String createdBy;
     private Date modifiedDate;
+    private String modifiedBy;
 
 }

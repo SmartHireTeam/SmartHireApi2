@@ -6,6 +6,7 @@ import com.wf.ProfileBestMatch.exception.FileFormatUnSupportedException;
 import com.wf.ProfileBestMatch.exception.ResourceNotFoundException;
 import com.wf.ProfileBestMatch.repository.JDRepository;
 import com.wf.ProfileBestMatch.request.JDRequest;
+import com.wf.ProfileBestMatch.response.JDResponse;
 import com.wf.ProfileBestMatch.utillity.FileCompressDecompressUtillity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 @Service
 public class JDService {
@@ -28,12 +31,48 @@ public class JDService {
         LOG.info("JD - Get API Call");
         if(jdId != null && jdId > 0) {
             JDEntity jdEntity = jdRepository.findByJdId(jdId);
+            JDResponse response = null;
             if(jdEntity == null) {
                 throw new ResourceNotFoundException("JD Profile does not exists with this Id: " + jdId);
+            } else {
+                response = JDResponse.builder()
+                        .jdId(jdEntity.getJdId())
+                        .jdCode(jdEntity.getJdCode())
+                        .jdName(jdEntity.getJdName())
+                        .jdDescription(jdEntity.getJdDescription())
+                        .fileName(jdEntity.getFileName())
+                        .fileType(jdEntity.getFileType())
+                        .createdBy(jdEntity.getCreatedBy())
+                        .modifiedBy(jdEntity.getModifiedBy())
+                        .createdDate(jdEntity.getCreatedDate())
+                        .modifiedDate(jdEntity.getModifiedDate())
+                        .jdFile(FileCompressDecompressUtillity.decompressImage(jdEntity.getJdFile()))
+                        .build();
             }
-            return jdEntity;
+            return response;
         } else {
-            return jdRepository.findAll();
+            List<JDEntity> jdEntityList = jdRepository.findAll();
+            List<JDResponse> response = new LinkedList<>();
+
+            jdEntityList.forEach(jd -> {
+                response.add(JDResponse.builder()
+                        .jdId(jd.getJdId())
+                        .jdCode(jd.getJdCode())
+                        .jdName(jd.getJdName())
+                        .jdDescription(jd.getJdDescription())
+                        .fileName(jd.getFileName())
+                        .fileType(jd.getFileType())
+                        .createdBy(jd.getCreatedBy())
+                        .modifiedBy(jd.getModifiedBy())
+                        .createdDate(jd.getCreatedDate())
+                        .modifiedDate(jd.getModifiedDate())
+                        .jdFile(FileCompressDecompressUtillity.decompressImage(jd.getJdFile()))
+                        .build());
+
+            });
+
+            return response;
+
         }
     }
 

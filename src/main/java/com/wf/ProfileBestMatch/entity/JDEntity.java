@@ -23,7 +23,7 @@ public class JDEntity {
     @Column(name = "JD_Description")
     private String jdDescription;
 
-    @JsonIgnore
+    //@JsonIgnore
     @Lob
     @Column(name = "JD_FILE", length = 1000)
     private byte[] jdFile;
