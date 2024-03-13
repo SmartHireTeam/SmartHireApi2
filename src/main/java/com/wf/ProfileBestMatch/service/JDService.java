@@ -80,7 +80,10 @@ public class JDService {
     public JDEntity saveJD(JDRequest request) throws IOException {
         LOG.info("JD - Save API Call");
 
+        Integer topId = jdRepository.findTopID() + 1;
+
         JDEntity jdEntity = new JDEntity();
+        jdEntity.setJdCode("Job_Code_" + topId);
         jdEntity.setCreatedBy(request.getCreatedBy());
         jdEntity.setCreatedDate(new Date());
 
@@ -119,8 +122,8 @@ public class JDService {
             throw new FileEmptyException("File should not be empty");
         }
 
-        if (!request.getJdFile().getContentType().contains(".pdf") ||
-                !request.getJdFile().getContentType().contains(".docx")) {
+        if (!request.getJdFile().getContentType().endsWith("pdf") &&
+                !request.getJdFile().getContentType().endsWith("docx")) {
             throw new FileFormatUnSupportedException("File format un-supported... Supporting media type is .pdf and .docx");
         }
 
@@ -131,9 +134,11 @@ public class JDService {
 
         jdEntity.setJdDescription(request.getJdDescription());
         jdEntity.setJdName(request.getJdName());
-        jdEntity.setJdCode(request.getJdCode());
+        //jdEntity.setJdCode(request.getJdCode());
 
         jdRepository.save(jdEntity);
+
+        jdEntity.setJdFile(FileCompressDecompressUtillity.decompressImage(jdEntity.getJdFile()));
         return jdEntity;
     }
 
