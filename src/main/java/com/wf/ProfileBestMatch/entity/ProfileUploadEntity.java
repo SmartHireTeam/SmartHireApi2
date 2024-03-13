@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "Upload_Profile")
+@Table(name = "Upload_Profile", schema = "SmartHire")
 public class ProfileUploadEntity {
 
     @Id

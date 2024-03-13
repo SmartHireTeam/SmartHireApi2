@@ -10,4 +10,8 @@ public class ResourceExsitsExeption extends RuntimeException {
         super(message);
     }
 
+    public ResourceExsitsExeption(String message, Throwable cause) {
+        super(message, cause);
+    }
+
 }

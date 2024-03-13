@@ -97,7 +97,7 @@ azurewebapp {
 	pricingTier = 'P1v2'
 	region = 'eastus'
 	runtime {
-		os = 'Linux'
+		os = 'Windows'
 		webContainer = 'Java SE'
 		javaVersion = 'Java 17'
 	}

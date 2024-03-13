@@ -10,4 +10,8 @@ public class FileFormatUnSupportedException extends RuntimeException {
         super(message);
     }
 
+    public FileFormatUnSupportedException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
 }

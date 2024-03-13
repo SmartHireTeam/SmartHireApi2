@@ -5,8 +5,12 @@ import com.wf.ProfileBestMatch.service.JDService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/wf/profileMatch/")
@@ -20,13 +24,15 @@ public class JDController {
         return new ResponseEntity<>(jdService.getAllJD(jdId), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/jd")
-    public ResponseEntity<Object> saveJD(@Validated @RequestBody JDRequest request) {
+    @PostMapping(value = "/jdUpload")
+    public ResponseEntity<Object> saveJD(@ModelAttribute JDRequest request, Model model,
+                                         RedirectAttributes redirectAttributes) throws IOException {
         return new ResponseEntity<>(jdService.saveJD(request), HttpStatus.OK);
     }
 
-    @PutMapping(value = "/jd")
-    public ResponseEntity<Object> updateJD(@Validated @RequestBody JDRequest request) {
+    @PutMapping(value = "/jdUpload")
+    public ResponseEntity<Object> updateJD(@ModelAttribute JDRequest request, Model model,
+                                           RedirectAttributes redirectAttributes) throws IOException {
         return new ResponseEntity<>(jdService.updateJD(request), HttpStatus.OK);
     }
 

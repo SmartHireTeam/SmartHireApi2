@@ -26,5 +26,48 @@ CREATE TABLE [SmartHire].[HR_Profile](
 )
 GO
 
+Create table [SmartHire].[JOB_DESCRIPTION_UPLOAD]
+(
+JD_ID INT IDENTITY(1,1) NOT NULL,
+JD_Code VARCHAR(50) NULL,
+JD_Name VARCHAR(500) NULL,
+JD_Description VARCHAR(2000) NULL,
+JD_FILE varbinary(max) NULL,
+File_Name VARCHAR(500) NULL,
+File_Type VARCHAR(20) NULL,
+Created_Date DateTime NULL,
+Created_By VARCHAR(2000) NULL,
+Modified_Date DateTime NULL,
+Modified_By VARCHAR(2000) NULL,
+CONSTRAINT [PK_JD_ID] PRIMARY KEY CLUSTERED
+([JD_ID])
+);
+GO
+--
+
+INSERT INTO [SmartHire].[JOB_DESCRIPTION_UPLOAD]
+           ([JD_Code]
+           ,[JD_Name]
+           ,[JD_Description]
+           ,[JD_FILE]
+		   ,[File_Name]
+		   ,[File_Type]
+           ,[Created_Date]
+           ,[Created_By]
+           ,[Modified_Date]
+           ,[Modified_By])
+     VALUES
+           ('JD_Code'
+           ,'JD_Name'
+           ,'JD_Description'
+           ,Convert(varbinary(max),'D:\WF_Hackathon\CV_Sample.pdf')
+           ,'CV_Sample.pdf'
+           ,'pdf'
+           ,getDate()
+           ,'Akash'
+           ,getDate()
+           ,'Akash')
+GO
+
 
 
