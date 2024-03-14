@@ -1,16 +1,20 @@
 package com.wf.ProfileBestMatch.service;
 
+import com.wf.ProfileBestMatch.entity.JDEntity;
 import com.wf.ProfileBestMatch.entity.ProfileUploadEntity;
+import com.wf.ProfileBestMatch.exception.FileEmptyException;
+import com.wf.ProfileBestMatch.exception.FileFormatUnSupportedException;
 import com.wf.ProfileBestMatch.exception.ResourceNotFoundException;
 import com.wf.ProfileBestMatch.repository.ProfileUploadRepository;
 import com.wf.ProfileBestMatch.request.ProfileUploadRequest;
+import com.wf.ProfileBestMatch.utillity.FileCompressDecompressUtillity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -27,20 +31,21 @@ public class ProfileUploadService {
         if(jdId != null && jdId > 0) {
             List<ProfileUploadEntity> uploadedProfiles = profileUploadRepository.findByJdId(jdId);
             if(uploadedProfiles == null || uploadedProfiles.size() == 0) {
-                throw new ResourceNotFoundException("Profiles does not exists under this JD Id: " + jdId);
+                throw new ResourceNotFoundException("JD does not exists with this JD Id: " + jdId);
             }
             return uploadedProfiles;
         } else {
+            // return all the list of profiles under all JDs
             return profileUploadRepository.findAll();
         }
     }
 
-    public Object getSingleUploadedProfile(Integer reqId) {
+    public Object getSingleUploadedProfile(Integer profileId) {
         LOG.info("JD - Get API Call");
-        if(reqId != null && reqId > 0) {
-            ProfileUploadEntity uploadedProfiles = profileUploadRepository.findByReqId(reqId);
+        if(profileId != null && profileId > 0) {
+            ProfileUploadEntity uploadedProfiles = profileUploadRepository.findByProfileId(profileId);
             if(uploadedProfiles == null) {
-                throw new ResourceNotFoundException("Profile does not exists under this Req Id: " + reqId);
+                throw new ResourceNotFoundException("Profile does not exists under this profile Id: " + profileId);
             }
             return uploadedProfiles;
         } else {
@@ -49,27 +54,66 @@ public class ProfileUploadService {
     }
 
     @Transactional
-    public ProfileUploadEntity uploadProfileFile(ProfileUploadRequest request) {
-        LOG.info("JD - Save API Call");
-        ProfileUploadEntity uploadEntity = new ProfileUploadEntity();
-        uploadEntity.setJdId(request.getJdId());
+    public ProfileUploadEntity saveProfile(ProfileUploadRequest request) throws IOException {
+        LOG.info("Profile Upload - Save API Call");
 
+        //Validate file format
+        validateFile(request);
+
+        ProfileUploadEntity uploadEntity = new ProfileUploadEntity();
         uploadEntity.setCreatedBy(request.getCreatedBy());
         uploadEntity.setCreatedDate(new Date());
+
+        return saveUpdateProfile(uploadEntity, request);
+    }
+
+    @Transactional
+    public ProfileUploadEntity updateProfile(ProfileUploadRequest request) throws IOException {
+        LOG.info("Profile Upload - Update API Call");
+
+        //Validate file format
+        validateFile(request);
+
+        ProfileUploadEntity uploadEntity = profileUploadRepository.findByProfileId(request.getProfileId());
+
+        if(uploadEntity == null) {
+            throw new ResourceNotFoundException("Profile does not exists with id : " + request.getProfileId());
+        }
+
+        return saveUpdateProfile(uploadEntity, request);
+    }
+
+    @Transactional
+    public void deleteJD(Integer profileId) {
+        ProfileUploadEntity uploadEntity = profileUploadRepository.findByProfileId(profileId);
+        if(uploadEntity == null) {
+            throw new ResourceNotFoundException("Profile does not exists with id : " + profileId);
+        }
+        profileUploadRepository.deleteByProfileId(profileId);
+    }
+
+    private ProfileUploadEntity saveUpdateProfile(ProfileUploadEntity uploadEntity, ProfileUploadRequest request) throws IOException {
+        uploadEntity.setJdId(request.getJdId());
         uploadEntity.setModifiedBy(request.getModifiedBy());
         uploadEntity.setModifiedDate(new Date());
-
-        uploadEntity.setFileType(request.getFileType());
-        uploadEntity.setFileName(request.getFileName());
-        uploadEntity.setFilePath(request.getFilePath());
-
-//        uploadEntity.setFileType(request.getFile().getContentType());
-//        uploadEntity.setFileName(request.getFile().getOriginalFilename());
-//        uploadEntity.setFilePath(request.getFile().getName());
+        uploadEntity.setExpectedCtc(request.getExpectedCtc());
+        uploadEntity.setExperience(request.getExperience());
+        uploadEntity.setFileType(request.getResumeFile().getContentType());
+        uploadEntity.setFileName(request.getResumeFile().getOriginalFilename());
+        uploadEntity.setResumeFile(FileCompressDecompressUtillity.compressFile(request.getResumeFile().getBytes()));
 
         profileUploadRepository.save(uploadEntity);
         return uploadEntity;
     }
 
-
+    private void validateFile(ProfileUploadRequest request) {
+        if (request.getResumeFile() == null || request.getResumeFile().isEmpty()) {
+            LOG.error("File not found: " + request.getResumeFile());
+            throw new FileEmptyException("File should not be null or empty");
+        }
+        if (!request.getResumeFile().getContentType().endsWith("pdf") &&
+                !request.getResumeFile().getContentType().endsWith("docx")) {
+            throw new FileFormatUnSupportedException("File format un-supported... Supporting media type is .pdf and .docx");
+        }
+    }
 }

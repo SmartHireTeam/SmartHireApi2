@@ -6,19 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class ProfileUploadRequest {
 
-    private Integer reqId;
+    private Integer profileId;
     private Integer jdId;
-    private String fileName;
-    private String fileType;
-    private String filePath;
-    private MultipartFile file;
+    private MultipartFile resumeFile;
+    private String expectedCtc;
+    private String experience;
     private String createdBy;
     private String modifiedBy;
 

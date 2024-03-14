@@ -71,3 +71,22 @@ GO
 
 
 
+CREATE TABLE [SmartHire].[Profile_Upload](
+	[ID] [int] IDENTITY(101,1) NOT NULL,
+	[JD_ID] [int] NOT NULL,
+	[Resume_FILE] varbinary(max) NULL,
+	[File_Name] VARCHAR(500) NULL,
+	[File_Type] VARCHAR(20) NULL,
+	[Expected_CTC] Integer null,
+	[Experience] char(10) null,
+	[Created_Date] [datetime] NOT NULL DEFAULT (getdate()),
+	[Created_By] [varchar](255) NULL,
+	[Modified_Date] [datetime] NULL,
+	[Modified_By] [varchar](255) NULL,
+ CONSTRAINT [PK_ID] PRIMARY KEY CLUSTERED
+([ID] ASC)
+)
+GO
+
+
+
