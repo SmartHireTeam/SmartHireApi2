@@ -46,7 +46,7 @@ public class JDService {
                         .modifiedBy(jdEntity.getModifiedBy())
                         .createdDate(jdEntity.getCreatedDate())
                         .modifiedDate(jdEntity.getModifiedDate())
-                        .jdFile(FileCompressDecompressUtillity.decompressImage(jdEntity.getJdFile()))
+                        .jdFile(FileCompressDecompressUtillity.decompressFile(jdEntity.getJdFile()))
                         .build();
             }
             return response;
@@ -66,7 +66,7 @@ public class JDService {
                         .modifiedBy(jd.getModifiedBy())
                         .createdDate(jd.getCreatedDate())
                         .modifiedDate(jd.getModifiedDate())
-                        .jdFile(FileCompressDecompressUtillity.decompressImage(jd.getJdFile()))
+                        .jdFile(FileCompressDecompressUtillity.decompressFile(jd.getJdFile()))
                         .build());
 
             });
@@ -79,6 +79,9 @@ public class JDService {
     @Transactional
     public JDEntity saveJD(JDRequest request) throws IOException {
         LOG.info("JD - Save API Call");
+
+        //Validate file format
+        validateFile(request);
 
         Integer topId = jdRepository.findTopID() + 1;
 
@@ -93,6 +96,9 @@ public class JDService {
     @Transactional
     public JDEntity updateJD(JDRequest request) throws IOException {
         LOG.info("JD - Update API Call");
+
+        //Validate file format
+        validateFile(request);
 
         JDEntity jdEntity = jdRepository.findByJdId(request.getJdId());
 
@@ -118,28 +124,26 @@ public class JDService {
         jdEntity.setModifiedDate(new Date());
 
         //File to Upload
-        if (request.getJdFile().isEmpty()) {
-            throw new FileEmptyException("File should not be empty");
-        }
-
-        if (!request.getJdFile().getContentType().endsWith("pdf") &&
-                !request.getJdFile().getContentType().endsWith("docx")) {
-            throw new FileFormatUnSupportedException("File format un-supported... Supporting media type is .pdf and .docx");
-        }
-
-
-        jdEntity.setJdFile(FileCompressDecompressUtillity.compressImage(request.getJdFile().getBytes()));
+        jdEntity.setJdFile(FileCompressDecompressUtillity.compressFile(request.getJdFile().getBytes()));
         jdEntity.setFileName(request.getJdFile().getOriginalFilename());
         jdEntity.setFileType(request.getJdFile().getContentType());
 
         jdEntity.setJdDescription(request.getJdDescription());
         jdEntity.setJdName(request.getJdName());
-        //jdEntity.setJdCode(request.getJdCode());
 
         jdRepository.save(jdEntity);
 
-        jdEntity.setJdFile(FileCompressDecompressUtillity.decompressImage(jdEntity.getJdFile()));
+        jdEntity.setJdFile(FileCompressDecompressUtillity.decompressFile(jdEntity.getJdFile()));
         return jdEntity;
+    }
+
+    private void validateFile(JDRequest request) {
+        if (request.getJdFile() == null || request.getJdFile().isEmpty()) {
+            throw new FileEmptyException("File should not be empty");
+        }
+        if (!request.getJdFile().getContentType().endsWith("pdf")) {
+            throw new FileFormatUnSupportedException("File format un-supported... Supporting media type is .pdf");
+        }
     }
 
 }

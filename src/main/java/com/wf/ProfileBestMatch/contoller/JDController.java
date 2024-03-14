@@ -25,14 +25,12 @@ public class JDController {
     }
 
     @PostMapping(value = "/jdUpload")
-    public ResponseEntity<Object> saveJD(@ModelAttribute JDRequest request, Model model,
-                                         RedirectAttributes redirectAttributes) throws IOException {
+    public ResponseEntity<Object> saveJD(@ModelAttribute JDRequest request, Model model) throws IOException {
         return new ResponseEntity<>(jdService.saveJD(request), HttpStatus.OK);
     }
 
     @PutMapping(value = "/jdUpload")
-    public ResponseEntity<Object> updateJD(@ModelAttribute JDRequest request, Model model,
-                                           RedirectAttributes redirectAttributes) throws IOException {
+    public ResponseEntity<Object> updateJD(@ModelAttribute JDRequest request, Model model) throws IOException {
         return new ResponseEntity<>(jdService.updateJD(request), HttpStatus.OK);
     }
 
