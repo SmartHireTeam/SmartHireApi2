@@ -46,7 +46,7 @@ dependencies {
 //	implementation 'org.springframework.boot:spring-boot-starter-security'
 //	implementation 'org.springframework.security:spring-security-web'
 
-	implementation group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.5.2.RELEASE'
+//	implementation group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.5.2.RELEASE'
 
 	implementation group: 'com.azure.spring', name: 'spring-cloud-azure-starter', version: '4.4.0'
 	implementation group: 'com.azure.spring', name: 'spring-cloud-azure-starter-storage-blob', version: '4.0.0'
