@@ -86,7 +86,7 @@ public class JDService {
         Integer topId = jdRepository.findTopID() + 1;
 
         JDEntity jdEntity = new JDEntity();
-        jdEntity.setJdCode("Job_Code_" + topId);
+        jdEntity.setJdCode("Req_ID_" + topId);
         jdEntity.setCreatedBy(request.getCreatedBy());
         jdEntity.setCreatedDate(new Date());
 

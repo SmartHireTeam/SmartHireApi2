@@ -46,7 +46,10 @@ dependencies {
 //	implementation 'org.springframework.boot:spring-boot-starter-security'
 //	implementation 'org.springframework.security:spring-security-web'
 
+	implementation group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.5.2.RELEASE'
+
 	implementation group: 'com.azure.spring', name: 'spring-cloud-azure-starter', version: '4.4.0'
+	implementation group: 'com.azure.spring', name: 'spring-cloud-azure-starter-storage-blob', version: '4.0.0'
 
 	//MySQL
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.33'
@@ -92,8 +95,10 @@ tasks.named('test') {
 
 azurewebapp {
 	subscription = 'b94a1270-7800-4ffd-976d-e9036277350f'
-	resourceGroup = 'defaultresourcegroup-cus'
-	appName = 'smarthireservicejavaapi'
+	resourceGroup = 'smart-hire-javaapi-resource-group'
+//	clientId = 'ea6d107f-9572-48ca-9a87-3f9685ac2da5'
+//	secret = 'a854b791-d9e6-46c1-bacb-ea7dc326ef77'
+	appName = 'SmartHireJavaAPI'
 	pricingTier = 'P1v2'
 	region = 'eastus'
 	runtime {
